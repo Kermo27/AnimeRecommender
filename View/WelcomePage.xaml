@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AnimeRecommender.View.WelcomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Anime Recommender">
+
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Label
+            FontSize="Large"
+            HorizontalOptions="Center"
+            Text="Welcome to Anime Recommender" />
+        <Label
+            Margin="0,20,0,0"
+            FontSize="Medium"
+            HorizontalTextAlignment="Center"
+            Text="Please log in to access." />
+        <Button Clicked="OnLoginClicked" Text="Log In" />
+        <Button Clicked="OnSearchAnimePageClicked" Text="Search" />
+        <Button Clicked="OnMainPageClicked" Text="MainPage" />
+    </StackLayout>
+
+</ContentPage>

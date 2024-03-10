@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AnimeRecommender.View.SearchAnimePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:AnimeRecommender.Models"
+    xmlns:vm="clr-namespace:AnimeRecommender.ViewModels"
+    Title="Search Anime"
+    x:DataType="vm:SearchAnimeViewModel"
+    BackgroundColor="#121212">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <Entry
+                BackgroundColor="#333333"
+                Placeholder="Search for anime"
+                PlaceholderColor="DarkGray"
+                Text="{Binding SearchText}"
+                TextColor="WhiteSmoke" />
+            <Button
+                Margin="0,5,0,5"
+                BackgroundColor="#505050"
+                Command="{Binding SearchAnimeCommand}"
+                Text="Search"
+                TextColor="White" />
+
+
+            <CollectionView ItemsSource="{Binding Anime}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:AnimeDataModel">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                Grid.Column="0"
+                                Aspect="AspectFit"
+                                HeightRequest="100"
+                                Source="{Binding ImageUrl}"
+                                WidthRequest="100" />
+                            <StackLayout
+                                Grid.Column="1"
+                                Padding="10"
+                                Orientation="Vertical">
+                                <Label Text="{Binding Title}" TextColor="WhiteSmoke" />
+                                <Label Text="{Binding Description}" TextColor="LightGray" />
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
