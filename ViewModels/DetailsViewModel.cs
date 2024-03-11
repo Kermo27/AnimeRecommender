@@ -9,17 +9,29 @@ using System.Threading.Tasks;
 
 namespace AnimeRecommender.ViewModels
 {
-    [QueryProperty(nameof(MediaModel), nameof(MediaModel))]
-    public partial class DetailsViewModel : ObservableObject
+    public partial class DetailsViewModel : ObservableObject, IQueryAttributable
     {
-        public IMediaModel MediaModel { get; set; }
+        public MediaModel MediaModel { get; set; }
 
         [ObservableProperty]
         private string _title;
 
+        [ObservableProperty]
+        private string _description;
+
+        [ObservableProperty]
+        private Uri _imageUrl;
+
         public void Initialize()
         {
             Title = MediaModel.Title;
+            Description = MediaModel.Description;
+            ImageUrl = MediaModel.ImageUrl;
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            MediaModel = query[nameof(MediaModel)] as MediaModel?? new MediaModel() { Title = "No data", Description = "No data"};
         }
     }
 }

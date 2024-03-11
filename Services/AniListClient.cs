@@ -26,6 +26,7 @@ namespace AnimeRecommender.Services
             var filter = new SearchMediaFilter
             {
                 Query = query.Query,
+                Type = MediaType.Anime,
             };
             
             var results = await _client.SearchMediaAsync(filter);
@@ -45,7 +46,7 @@ namespace AnimeRecommender.Services
 
             var filter = new SearchMediaFilter
             {
-                Season = MediaSeason.Winter,
+                Season = GetSeason(),
                 SeasonYear = DateTime.Now.Year,
                 Type = MediaType.Anime,
                 IsAdult = false,
@@ -81,18 +82,43 @@ namespace AnimeRecommender.Services
             });
         }
 
-        public async Task<Uri> GetUserImageUrlAsync()
+        public async Task<string> GetUserImageUrlAsync()
         {
             var isAuthenticated = await _client.TryAuthenticateAsync(AccessToken.Token);
 
             if(!isAuthenticated)
             {
-                return new Uri("user_icon.png");
+                return "user_icon.png";
             }
 
             var user = await _client.GetAuthenticatedUserAsync();
 
-            return user.Avatar.LargeImageUrl;
+            return user.Avatar.LargeImageUrl.ToString();
+        }
+
+        public MediaSeason GetSeason()
+        {
+            switch(DateTime.Now.Month)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    return MediaSeason.Winter;
+                case 4:
+                case 5:
+                case 6:
+                    return MediaSeason.Spring;
+                case 7:
+                case 8:
+                case 9:
+                    return MediaSeason.Summer;
+                case 10:
+                case 11:
+                case 12:
+                    return MediaSeason.Fall;
+                default:
+                    return MediaSeason.Winter;
+            }
         }
     }
 }

@@ -16,10 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <ImageButton
@@ -43,136 +40,140 @@
             Text="{Binding SearchText, Mode=TwoWay}"
             TextColor="White" />
 
-        <Label
-            Grid.Row="2"
-            FontSize="20"
-            HorizontalOptions="Center"
-            Text="Top 20 Anime Winter 2024"
-            TextColor="WhiteSmoke"
-            VerticalOptions="Center" />
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout>
+                <Label
+                    Grid.Row="2"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="{Binding Top20AnimeTitle}"
+                    TextColor="WhiteSmoke"
+                    VerticalOptions="Center" />
 
-        <VerticalStackLayout Grid.Row="3">
-            <!--  Carousel with featured anime  -->
-            <CarouselView ItemsSource="{Binding FeaturedAnime}">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="m:AnimeDataModel">
-                        <Frame
-                            Margin="5"
-                            Padding="10"
-                            BackgroundColor="#222222"
-                            CornerRadius="10">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <Image
-                                    Grid.Row="0"
-                                    Grid.RowSpan="1"
-                                    Aspect="AspectFit"
-                                    HeightRequest="250"
-                                    HorizontalOptions="FillAndExpand"
-                                    Source="{Binding ImageUrl}"
-                                    VerticalOptions="FillAndExpand" />
-
-                                <Label
-                                    Grid.Row="0"
+                <VerticalStackLayout Grid.Row="3">
+                    <!--  Carousel with featured anime  -->
+                    <CollectionView ItemsLayout="HorizontalList" ItemsSource="{Binding FeaturedAnime}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="m:AnimeDataModel">
+                                <Border
                                     Margin="5"
-                                    FontSize="Small"
-                                    HorizontalOptions="Start"
-                                    Text="{Binding Index}"
-                                    TextColor="White"
-                                    VerticalOptions="Start" />
+                                    Padding="10"
+                                    BackgroundColor="#222222"
+                                    WidthRequest="250">
 
-                                <Label
-                                    Grid.Row="1"
-                                    FontSize="Medium"
-                                    HorizontalOptions="Center"
-                                    HorizontalTextAlignment="Center"
-                                    Text="{Binding Title}"
-                                    TextColor="WhiteSmoke"
-                                    VerticalOptions="Center" />
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="25,25,25,25" />
+                                    </Border.StrokeShape>
 
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
-        </VerticalStackLayout>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-        <Label
-            Grid.Row="4"
-            FontSize="20"
-            HorizontalOptions="Center"
-            Text="Trending Manga"
-            TextColor="WhiteSmoke"
-            VerticalOptions="Center" />
+                                        <Image
+                                            Grid.Row="0"
+                                            Grid.RowSpan="1"
+                                            Aspect="AspectFit"
+                                            HeightRequest="250"
+                                            HorizontalOptions="FillAndExpand"
+                                            Source="{Binding ImageUrl}"
+                                            VerticalOptions="FillAndExpand" />
 
-        <VerticalStackLayout Grid.Row="5">
-            <!--  Carousel with featured manga  -->
-            <CollectionView
-                ItemsLayout="HorizontalList"
-                ItemsSource="{Binding FeaturedManga}"
-                SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="m:MangaDataModel">
-                        <Border
-                            Margin="10"
-                            Padding="10"
-                            BackgroundColor="#222222"
-                            WidthRequest="250">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                        <Label
+                                            Grid.Row="1"
+                                            FontSize="Medium"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="1"
+                                            Text="{Binding Title}"
+                                            TextColor="WhiteSmoke"
+                                            VerticalOptions="Center" />
 
-                                <Image
-                                    Grid.Row="0"
-                                    Grid.RowSpan="1"
-                                    Aspect="AspectFit"
-                                    HeightRequest="250"
-                                    HorizontalOptions="FillAndExpand"
-                                    Source="{Binding ImageUrl}"
-                                    VerticalOptions="FillAndExpand"
-                                    WidthRequest="150" />
+                                    </Grid>
 
-                                <Label
-                                    Grid.Row="0"
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ItemTappedCommand, Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <Label
+                    Grid.Row="4"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="Trending Now Manga"
+                    TextColor="WhiteSmoke"
+                    VerticalOptions="Center" />
+
+                <VerticalStackLayout Grid.Row="5">
+                    <!--  Carousel with featured manga  -->
+                    <CollectionView
+                        ItemsLayout="HorizontalList"
+                        ItemsSource="{Binding FeaturedManga}"
+                        SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="m:MangaDataModel">
+                                <Border
                                     Margin="5"
-                                    FontSize="Small"
-                                    HorizontalOptions="Start"
-                                    Text="{Binding Index}"
-                                    TextColor="White"
-                                    VerticalOptions="Start" />
+                                    Padding="10"
+                                    BackgroundColor="#222222"
+                                    WidthRequest="250">
 
-                                <Label
-                                    Grid.Row="1"
-                                    FontSize="Medium"
-                                    HorizontalOptions="Center"
-                                    HorizontalTextAlignment="Center"
-                                    LineBreakMode="TailTruncation"
-                                    MaxLines="1"
-                                    Text="{Binding Title}"
-                                    TextColor="WhiteSmoke"
-                                    VerticalOptions="Center" />
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="25,25,25,25" />
+                                    </Border.StrokeShape>
 
-                            </Grid>
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding OnItemTappedCommand, Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}}" />
-                            </Border.GestureRecognizers>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="250" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image
+                                            Grid.Row="0"
+                                            Grid.RowSpan="1"
+                                            Aspect="AspectFit"
+                                            HeightRequest="250"
+                                            HorizontalOptions="FillAndExpand"
+                                            Source="{Binding ImageUrl}"
+                                            VerticalOptions="FillAndExpand" />
+
+                                        <Label
+                                            Grid.Row="1"
+                                            FontSize="Medium"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="1"
+                                            Text="{Binding Title}"
+                                            TextColor="WhiteSmoke"
+                                            VerticalOptions="Center" />
+
+                                    </Grid>
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ItemTappedCommand, Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
     </Grid>
 
 </ContentPage>

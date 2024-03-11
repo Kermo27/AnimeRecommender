@@ -1,4 +1,5 @@
-﻿using AnimeRecommender.Models;
+﻿using AniListNet.Objects;
+using AnimeRecommender.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace AnimeRecommender.Services
         Task<IEnumerable<AnimeDataModel>> GetSpecificAnimeDataAsync(AnimeSearchQuery query);
         Task<IEnumerable<AnimeDataModel>> GetFeaturedAnimeAsync();
         Task<IEnumerable<MangaDataModel>> GetFeaturedMangaAsync();
-        Task<Uri> GetUserImageUrlAsync();
+        Task<string> GetUserImageUrlAsync();
+        MediaSeason GetSeason();
     }
 }

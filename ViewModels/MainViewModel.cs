@@ -20,16 +20,21 @@ namespace AnimeRecommender.ViewModels
         private readonly IAuthenticatorService authenticator = new AuthenticatorService();
 
         [ObservableProperty]
-        ObservableCollection<AnimeDataModel> _featuredAnime = new ObservableCollection<AnimeDataModel>();
+        ObservableCollection<MediaModel> _featuredAnime = new ObservableCollection<MediaModel>();
 
         [ObservableProperty]
-        ObservableCollection<MangaDataModel> _featuredManga = new ObservableCollection<MangaDataModel>();
+        ObservableCollection<MediaModel> _featuredManga = new ObservableCollection<MediaModel>();
 
         [ObservableProperty]
         private string _userImageUrl = "user_icon.png";
 
         [ObservableProperty]
         private string _searchText;
+
+        [ObservableProperty]
+        private string _top20AnimeTitle;
+
+        private readonly string _top20AnimeTitleTemplate = "Top 20 Anime {0} {1}";
 
         public MainViewModel(IAniListClient client)
         {
@@ -38,6 +43,11 @@ namespace AnimeRecommender.ViewModels
 
         public void Initialize()
         {
+            var season = _client.GetSeason();
+            var year = DateTime.Now.Year;
+
+            Top20AnimeTitle = string.Format(_top20AnimeTitleTemplate, season, year);
+
             LoadFeaturedAnime();
             LoadFeaturedManga();
         }
@@ -52,6 +62,7 @@ namespace AnimeRecommender.ViewModels
             if (!string.IsNullOrEmpty(accessToken))
             {
                 AccessToken.Token = accessToken;
+                UserImageUrl = await _client.GetUserImageUrlAsync();
                 await Toast.Make("You are now logged in!").Show();
 
                 return;
@@ -70,29 +81,25 @@ namespace AnimeRecommender.ViewModels
         }
 
         [RelayCommand]
-        private async Task OnItemTapped()
+        private async Task ItemTapped(MediaModel mediaModel)
         {
-            //await Shell.Current.GoToAsync(nameof(DetailsPage), new Dictionary<string, object>
-            //{
-            //    { nameof(DetailsViewModel.MediaModel), mediaModel }
-            //});
-
+            await Shell.Current.GoToAsync(nameof(DetailsPage), new Dictionary<string, object>
+            {
+               { nameof(DetailsViewModel.MediaModel), mediaModel }
+            });
         }
 
         private async Task LoadFeaturedAnime()
         {
             var result = await _client.GetFeaturedAnimeAsync();
             FeaturedAnime.Clear();
-            int index = 1;
             foreach (var item in result)
             {
                 FeaturedAnime.Add(new AnimeDataModel
                 {
                     Title = item.Title,
                     ImageUrl = item.ImageUrl,
-                    Index = index
                 });
-                index++;
             }
         }
 
@@ -100,16 +107,13 @@ namespace AnimeRecommender.ViewModels
         {
             var result = await _client.GetFeaturedMangaAsync();
             FeaturedManga.Clear();
-            int index = 1;
             foreach (var item in result)
             {
                 FeaturedManga.Add(new MangaDataModel
                 {
                     Title = item.Title,
                     ImageUrl = item.ImageUrl,
-                    Index = index
                 });
-                index++;
             }
         }
     }

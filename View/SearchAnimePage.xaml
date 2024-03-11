@@ -5,48 +5,66 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:m="clr-namespace:AnimeRecommender.Models"
     xmlns:vm="clr-namespace:AnimeRecommender.ViewModels"
-    Title="Search Anime"
     x:DataType="vm:SearchAnimeViewModel"
-    BackgroundColor="#121212">
+    BackgroundColor="#121212"
+    Shell.BackgroundColor="#121212"
+    Shell.DisabledColor="Gray"
+    Shell.ForegroundColor="WhiteSmoke"
+    Shell.TitleColor="LightGray">
 
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="10">
-            <Entry
+            <SearchBar
+                Margin="0,0,0,10"
                 BackgroundColor="#333333"
-                Placeholder="Search for anime"
+                HorizontalOptions="FillAndExpand"
+                Placeholder="Search anime..."
                 PlaceholderColor="DarkGray"
-                Text="{Binding SearchText}"
-                TextColor="WhiteSmoke" />
-            <Button
-                Margin="0,5,0,5"
-                BackgroundColor="#505050"
-                Command="{Binding SearchAnimeCommand}"
-                Text="Search"
+                SearchCommand="{Binding SearchAnimeCommand}"
+                Text="{Binding SearchText, Mode=TwoWay}"
                 TextColor="White" />
 
-
-            <CollectionView ItemsSource="{Binding Anime}">
+            <CollectionView Margin="0" ItemsSource="{Binding Anime}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:AnimeDataModel">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Image
-                                Grid.Column="0"
-                                Aspect="AspectFit"
-                                HeightRequest="100"
-                                Source="{Binding ImageUrl}"
-                                WidthRequest="100" />
-                            <StackLayout
-                                Grid.Column="1"
-                                Padding="10"
-                                Orientation="Vertical">
-                                <Label Text="{Binding Title}" TextColor="WhiteSmoke" />
-                                <Label Text="{Binding Description}" TextColor="LightGray" />
-                            </StackLayout>
-                        </Grid>
+                        <Border
+                            Margin="5"
+                            Padding="5"
+                            BackgroundColor="#222222">
+                            <Grid Padding="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                    Grid.Column="0"
+                                    Aspect="AspectFit"
+                                    HeightRequest="100"
+                                    HorizontalOptions="Center"
+                                    Source="{Binding ImageUrl}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="100" />
+
+                                <StackLayout
+                                    Grid.Column="1"
+                                    Padding="10"
+                                    Orientation="Vertical">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        Text="{Binding Title}"
+                                        TextColor="WhiteSmoke" />
+                                    <Label
+                                        LineBreakMode="WordWrap"
+                                        MaxLines="10"
+                                        Text="{Binding Description}"
+                                        TextColor="LightGray"
+                                        TextType="Html" />
+                                </StackLayout>
+                            </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ItemTappedCommand, Source={RelativeSource AncestorType={x:Type vm:SearchAnimeViewModel}}}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

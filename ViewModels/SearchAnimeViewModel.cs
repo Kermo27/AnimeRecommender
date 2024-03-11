@@ -1,5 +1,6 @@
 ﻿using AnimeRecommender.Models;
 using AnimeRecommender.Services;
+using AnimeRecommender.View;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -46,6 +47,15 @@ namespace AnimeRecommender.ViewModels
             {
                 Anime.Add(item);
             }
+        }
+
+        [RelayCommand]
+        private async Task ItemTapped(MediaModel mediaModel)
+        {
+            await Shell.Current.GoToAsync(nameof(DetailsPage), new Dictionary<string, object>
+            {
+               { nameof(DetailsViewModel.MediaModel), mediaModel }
+            });
         }
     }
 }

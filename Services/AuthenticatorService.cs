@@ -10,10 +10,10 @@ namespace AnimeRecommender.Services
 {
     public class AuthenticatorService : IAuthenticatorService
     {
-        private static readonly string clientId = "17000";
-        private string clientSecret = "mKmdmR3bKJPDa1DcKP92iTwk086Om0zlU38FMVE4";
-        private static readonly string redirectUri = "myapp://"; // This matches the redirect URI in your AniList API client settings
-        private string authUrl = $"https://anilist.co/api/v2/oauth/authorize?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code";
+        private const string clientId = "17000";
+        private readonly string clientSecret = "mKmdmR3bKJPDa1DcKP92iTwk086Om0zlU38FMVE4";
+        private const string redirectUri = "myapp://"; // This matches the redirect URI in your AniList API client settings
+        private readonly string authUrl = $"https://anilist.co/api/v2/oauth/authorize?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code";
 
         public async Task<string> ExchangeCodeForTokenAsync(string code)
         {
